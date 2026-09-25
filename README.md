@@ -34,7 +34,7 @@ To use these scripts, add the files from `raycast-scripts` to a folder configure
 
 The commands activate Gather, open its developer console with ⌘⌥I, and send keystrokes through System Events. macOS may ask you to allow Raycast or `osascript` to control Gather and to grant Accessibility access. Enable the requested access in **System Settings → Privacy & Security → Automation** or **Accessibility**.
 
-When a command fails, GatherCheats copies the error details to the clipboard for debugging.
+In development mode, the extension copies error details to the clipboard for debugging. Published commands show an error without replacing your clipboard. Standalone script commands handle their own errors separately.
 
 ## Development and publishing
 
