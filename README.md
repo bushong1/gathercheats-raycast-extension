@@ -4,11 +4,11 @@ GatherCheats adds quick speed and teleport commands for Gather Desktop to Raycas
 
 ## Raycast commands
 
-| Command                      | What it does                                                                                     |
-| ---------------------------- | ------------------------------------------------------------------------------------------------ |
-| **GatherCheats 4x Speed**    | Sets Gather's speed modifier to 4×. Get on and off a go-kart to reset the speed.                 |
-| **Save Current Gather Spot** | Saves your current Gather space, map, and position under a name. Gather must be open in a space. |
-| **Teleport to Gather Spot**  | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.             |
+| Command                    | What it does                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Set 4x Speed**           | Sets Gather's speed modifier to 4×. Get on and off a go-kart to reset the speed.                 |
+| **Save Current Spot**      | Saves your current Gather space, map, and position under a name. Gather must be open in a space. |
+| **Teleport to Saved Spot** | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.             |
 
 Saved spots are kept in Raycast's local storage for the GatherCheats extension. They are not stored in the repository or in a regular file, and the standalone AppleScript cannot read Raycast's managed storage. Spots are labeled with their Gather space ID; teleporting only runs when that same space is open.
 
@@ -26,7 +26,7 @@ To add a favorite, run **Copy Current Location** while you are at the spot, past
 
 The list starts as `property teleportSpots : {}`. Paste entries between its outer braces, separating multiple entries with commas.
 
-The **Teleport to Gather Spot** command's Action Panel includes **Copy Script Entry**. Paste the copied entry into the `teleportSpots` list. The script's list is separate from the extension's saved spots and must be updated manually when you add or remove destinations.
+The **Teleport to Saved Spot** command's Action Panel includes **Copy Script Entry**. Paste the copied entry into the `teleportSpots` list. The script's list is separate from the extension's saved spots and must be updated manually when you add or remove destinations.
 
 To use these scripts, add the files from `raycast-scripts` to a folder configured in Raycast's Script Commands preferences.
 

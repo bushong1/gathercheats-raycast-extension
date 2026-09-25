@@ -59,7 +59,7 @@ export default function SaveGatherSpot() {
 
   return (
     <Form
-      navigationTitle="Save Current Gather Spot"
+      navigationTitle="Save Current Spot"
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Save Current Spot" onSubmit={handleSubmit} />

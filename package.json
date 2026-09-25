@@ -15,24 +15,24 @@
   "commands": [
     {
       "name": "gathercheats-4x-speed",
-      "title": "GatherCheats 4x Speed",
-      "subtitle": "Trigger 4x Speed for Gather Desktop",
+      "title": "Set 4x Speed",
+      "subtitle": "Gather Desktop",
       "description": "Opens Gather’s developer console, sets the game speed modifier to 4×, then closes the console. Reset the speed by getting on and off a go-kart.",
       "icon": "dashing-away.png",
       "mode": "no-view"
     },
     {
       "name": "save-gather-spot",
-      "title": "Save Current Gather Spot",
-      "subtitle": "Save this location for quick teleporting",
+      "title": "Save Current Spot",
+      "subtitle": "Gather Desktop",
       "description": "Save your current map and position in Gather as a named teleport destination.",
       "icon": "save-pushpin.png",
       "mode": "view"
     },
     {
       "name": "teleport-to-gather-spot",
-      "title": "Teleport to Gather Spot",
-      "subtitle": "Jump to one of your saved locations",
+      "title": "Teleport to Saved Spot",
+      "subtitle": "Gather Desktop",
       "description": "Search your saved Gather locations and teleport to one instantly.",
       "icon": "round-pushpin.png",
       "mode": "view"
