@@ -18,7 +18,7 @@
       "title": "Set 4x Speed",
       "subtitle": "Gather Desktop",
       "description": "Opens Gather’s developer console, sets the game speed modifier to 4×, then closes the console. Reset the speed by getting on and off a go-kart.",
-      "icon": "dashing-away.png",
+      "icon": "four-x-speed.png",
       "mode": "no-view"
     },
     {
@@ -26,7 +26,7 @@
       "title": "Save Current Spot",
       "subtitle": "Gather Desktop",
       "description": "Save your current map and position in Gather as a named teleport destination.",
-      "icon": "save-pushpin.png",
+      "icon": "save-spot.png",
       "mode": "view"
     },
     {
@@ -34,7 +34,7 @@
       "title": "Teleport to Saved Spot",
       "subtitle": "Gather Desktop",
       "description": "Search your saved Gather locations and teleport to one instantly.",
-      "icon": "round-pushpin.png",
+      "icon": "teleport-spot.png",
       "mode": "view"
     }
   ],
