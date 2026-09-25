@@ -1,20 +1,20 @@
 # GatherCheats
 
-GatherCheats adds quick speed and teleport commands for Gather Desktop to Raycast. It is a macOS-only extension because it uses AppleScript and System Events to operate Gather's developer console.
+GatherCheats adds speed and teleport commands for the Gather v1 desktop app on macOS. It does not support Gather v2 beta. The extension uses AppleScript and System Events to operate Gather's developer console.
 
 ## Raycast commands
 
-| Command                    | What it does                                                                                     |
-| -------------------------- | ------------------------------------------------------------------------------------------------ |
-| **Set 4x Speed**           | Sets Gather's speed modifier to 4×. Get on and off a go-kart to reset the speed.                 |
-| **Save Current Spot**      | Saves your current Gather space, map, and position under a name. Gather must be open in a space. |
-| **Teleport to Saved Spot** | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.             |
+| Command                    | What it does                                                                                        |
+| -------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Set 4x Speed**           | Sets Gather v1's speed modifier to 4×. Get on and off a go-kart to reset the speed.                 |
+| **Save Current Spot**      | Saves your current Gather v1 space, map, and position under a name. Gather must be open in a space. |
+| **Teleport to Saved Spot** | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.                |
 
 Saved spots are kept in Raycast's local storage for the GatherCheats extension. They are not stored in the repository or in a regular file, and the standalone AppleScript cannot read Raycast's managed storage. Spots are labeled with their Gather space ID; teleporting only runs when that same space is open.
 
 ## Standalone Raycast scripts
 
-The [`raycast-scripts`](raycast-scripts) directory contains script-command versions for workflows that do not need the Raycast extension UI.
+The [`raycast-scripts`](raycast-scripts) directory contains script-command versions for Gather v1 Desktop workflows that do not need the Raycast extension UI.
 
 `gather-4x.applescript` sets the speed modifier to 4×. `copy-current-location.applescript` copies your current Gather location as an entry for `teleport-to-saved-spot.applescript`, which offers a menu of favorite locations.
 

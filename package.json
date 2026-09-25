@@ -2,21 +2,22 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "gathercheats",
   "title": "GatherCheats",
-  "description": "Quickly change Gather's game speed and save or teleport to frequently used locations.",
+  "description": "Change speed and teleport between saved spots in Gather v1 Desktop for macOS (not Gather v2 beta).",
   "icon": "extension-icon.png",
   "author": "charles_bushong",
   "platforms": [
     "macOS"
   ],
   "categories": [
-    "Applications"
+    "Applications",
+    "Communication"
   ],
   "license": "MIT",
   "commands": [
     {
       "name": "gathercheats-4x-speed",
       "title": "Set 4x Speed",
-      "subtitle": "Gather Desktop",
+      "subtitle": "Gather v1 Desktop",
       "description": "Opens Gather’s developer console, sets the game speed modifier to 4×, then closes the console. Reset the speed by getting on and off a go-kart.",
       "icon": "four-x-speed.png",
       "mode": "no-view"
@@ -24,7 +25,7 @@
     {
       "name": "save-gather-spot",
       "title": "Save Current Spot",
-      "subtitle": "Gather Desktop",
+      "subtitle": "Gather v1 Desktop",
       "description": "Save your current map and position in Gather as a named teleport destination.",
       "icon": "save-spot.png",
       "mode": "view"
@@ -32,7 +33,7 @@
     {
       "name": "teleport-to-gather-spot",
       "title": "Teleport to Saved Spot",
-      "subtitle": "Gather Desktop",
+      "subtitle": "Gather v1 Desktop",
       "description": "Search your saved Gather locations and teleport to one instantly.",
       "icon": "teleport-spot.png",
       "mode": "view"

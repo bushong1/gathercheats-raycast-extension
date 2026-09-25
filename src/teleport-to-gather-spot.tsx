@@ -101,7 +101,7 @@ export default function TeleportToGatherSpot() {
       {!isLoading && spots.length === 0 && (
         <List.EmptyView
           title="No Saved Spots"
-          description="Run Save Current Spot while Gather is open to add a destination."
+          description="Run Save Current Spot while Gather v1 Desktop is open to add a destination."
         />
       )}
     </List>

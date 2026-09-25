@@ -8,7 +8,7 @@
 # Optional parameters:
 # @raycast.icon 📍
 # @raycast.packageName GatherCheats
-# @raycast.description Copy the current Gather location as a teleport script entry
+# @raycast.description Copy a Gather v1 Desktop location as a teleport script entry
 
 # Documentation:
 # @raycast.author charles_bushong

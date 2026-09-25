@@ -8,7 +8,7 @@
 # Optional parameters:
 # @raycast.icon 💨
 # @raycast.packageName GatherCheats
-# @raycast.description Turn on 4x speed in Gather
+# @raycast.description Turn on 4x speed in Gather v1 Desktop for macOS
 
 # Documentation:
 # @raycast.author charles_bushong

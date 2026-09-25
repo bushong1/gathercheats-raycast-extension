@@ -8,7 +8,7 @@
 # Optional parameters:
 # @raycast.icon 📍
 # @raycast.packageName GatherCheats
-# @raycast.description Teleport to a configured Gather location
+# @raycast.description Teleport to a configured Gather v1 Desktop location
 
 # Documentation:
 # @raycast.author charles_bushong

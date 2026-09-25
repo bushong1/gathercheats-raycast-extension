@@ -67,7 +67,7 @@ export default function SaveGatherSpot() {
       }
     >
       <Form.TextField id="label" title="Spot Name" placeholder="e.g. Main Office" autoFocus />
-      <Form.Description text="Gather must be open in a space. The current map and position will be saved for this space." />
+      <Form.Description text="Gather v1 Desktop must be open in a space. The current map and position will be saved for this space." />
     </Form>
   );
 }
