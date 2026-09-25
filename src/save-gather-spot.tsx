@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Form, showHUD, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Form, popToRoot, showHUD, showToast, Toast } from "@raycast/api";
 import { randomUUID } from "node:crypto";
 import { copyErrorToClipboard } from "./errors";
 import {
@@ -33,6 +33,9 @@ export default function SaveGatherSpot() {
 
     try {
       const result = await runGatherConsole(capturePositionScript());
+      if (result.startsWith("GATHERCHEATS_ERROR:")) {
+        throw new Error(result.slice("GATHERCHEATS_ERROR:".length).trim());
+      }
       const position: unknown = JSON.parse(result);
       if (!isCurrentPosition(position)) {
         throw new Error("Gather did not return a valid map position. Make sure you are in a Gather space.");
@@ -41,6 +44,7 @@ export default function SaveGatherSpot() {
       const spot: TeleportSpot = { id: randomUUID(), label, ...position };
       const spots = await getSavedSpots();
       await setSavedSpots([...spots, spot]);
+      await popToRoot({ clearSearchBar: true });
       await showHUD(`Saved Gather spot: ${label}`);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

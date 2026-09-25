@@ -22,17 +22,35 @@ export async function runGatherConsole(js: string): Promise<string> {
   const script = `
 set previousClipboard to the clipboard
 try
+  set previousClipboardText to the clipboard as text
+on error
+  set previousClipboardText to ""
+end try
+try
   tell application "Gather" to activate
-  delay 0.2
   tell application "System Events"
+    repeat 30 times
+      if exists process "Gather" then
+        if frontmost of process "Gather" then exit repeat
+      end if
+      delay 0.1
+    end repeat
+    if not (exists process "Gather") then error "Gather did not launch."
+    if not (frontmost of process "Gather") then error "Gather did not come to the foreground."
+    delay 0.3
     keystroke "i" using {command down, option down}
-    delay 0.5
+    delay 0.8
     keystroke ${appleScriptString(js)}
     key code 36
-    delay 0.3
-    set commandOutput to the clipboard as text
+    set commandOutput to previousClipboardText
+    repeat 50 times
+      delay 0.2
+      set commandOutput to the clipboard as text
+      if commandOutput is not previousClipboardText then exit repeat
+    end repeat
     keystroke "i" using {command down, option down}
   end tell
+  if commandOutput is previousClipboardText then error "Gather did not copy a console result within 10 seconds. Check that its developer console opened and accepted the command."
   set the clipboard to previousClipboard
   return commandOutput
 on error errorMessage number errorNumber
@@ -63,9 +81,9 @@ export async function setSavedSpots(spots: TeleportSpot[]): Promise<void> {
 }
 
 export function capturePositionScript(): string {
-  return `copy(JSON.stringify((() => { const position = gameSpace.getMyPredictedPos(); return { spaceId: game.spaceId, mapId: position.map || gameSpace.getMyPlayerMap().id, x: position.x, y: position.y }; })()))`;
+  return `try { const position = gameSpace.getMyPredictedPos(); copy(JSON.stringify({ spaceId: game.spaceId, mapId: position.map || gameSpace.getMyPlayerMap().id, x: position.x, y: position.y })); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error)); }`;
 }
 
 export function teleportScript(spot: TeleportSpot): string {
-  return `if (game.spaceId !== ${JSON.stringify(spot.spaceId)}) { copy(JSON.stringify({ error: "wrong-space", spaceId: game.spaceId })); } else { game.teleport(${JSON.stringify(spot.mapId)}, ${spot.x}, ${spot.y}); copy(JSON.stringify({ success: true })); }`;
+  return `if (game.spaceId !== ${JSON.stringify(spot.spaceId)}) { copy(JSON.stringify({ error: "wrong-space", spaceId: game.spaceId })); } else { copy(JSON.stringify({ success: true })); game.teleport(${JSON.stringify(spot.mapId)}, ${spot.x}, ${spot.y}); }`;
 }
