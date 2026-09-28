@@ -1,7 +1,14 @@
 import { Action, ActionPanel, Clipboard, Icon, List, showHUD, showToast, Toast } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { copyErrorToClipboard } from "./errors";
-import { getSavedSpots, runGatherConsole, setSavedSpots, TeleportSpot, teleportScript } from "./teleport-utils";
+import {
+  GatherNotFocusedError,
+  getSavedSpots,
+  runGatherConsole,
+  setSavedSpots,
+  TeleportSpot,
+  teleportScript,
+} from "./teleport-utils";
 
 export default function TeleportToGatherSpot() {
   const [spots, setSpots] = useState<TeleportSpot[]>([]);
@@ -34,6 +41,10 @@ export default function TeleportToGatherSpot() {
       }
       await showHUD(`Teleported to ${spot.label}`);
     } catch (error) {
+      if (error instanceof GatherNotFocusedError) {
+        await showHUD(error.message);
+        return;
+      }
       const message = error instanceof Error ? error.message : String(error);
       const copied = await copyErrorToClipboard(`Teleport to ${spot.label}`, error);
       await showToast({

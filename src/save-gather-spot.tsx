@@ -4,6 +4,7 @@ import { copyErrorToClipboard } from "./errors";
 import {
   capturePositionScript,
   CurrentPosition,
+  GatherNotFocusedError,
   getSavedSpots,
   runGatherConsole,
   setSavedSpots,
@@ -47,6 +48,10 @@ export default function SaveGatherSpot() {
       await popToRoot({ clearSearchBar: true });
       await showHUD(`Saved Gather spot: ${label}`);
     } catch (error) {
+      if (error instanceof GatherNotFocusedError) {
+        await showHUD(error.message);
+        return;
+      }
       const message = error instanceof Error ? error.message : String(error);
       const copied = await copyErrorToClipboard("Save Current Gather Spot", error);
       await showToast({

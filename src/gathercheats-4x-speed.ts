@@ -1,11 +1,17 @@
-import { showHUD } from "@raycast/api";
+import { LaunchProps, showHUD } from "@raycast/api";
 import { copyErrorToClipboard } from "./errors";
-import { runGatherConsole } from "./teleport-utils";
+import { GatherNotFocusedError, runGatherConsole } from "./teleport-utils";
 
-export default async function main() {
+export default async function main(props: LaunchProps<{ arguments: { speed?: string } }>) {
   try {
+    const speed = props.arguments?.speed || "4";
+    if (!["1", "2", "3", "4"].includes(speed)) {
+      throw new Error(`Invalid speed: ${speed}. Choose 1, 2, 3, or 4.`);
+    }
+
     const result = await runGatherConsole(
-      "try { game.setSpeedModifier(4); copy('GATHERCHEATS_OK'); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error) + ' ' + (error && error.stack ? error.stack : '')); }",
+      `try { game.setSpeedModifier(${speed}); copy('GATHERCHEATS_OK'); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error) + ' ' + (error && error.stack ? error.stack : '')); }`,
+      { resetRaycast: true },
     );
     if (result.startsWith("GATHERCHEATS_ERROR:")) {
       throw new Error(result.slice("GATHERCHEATS_ERROR:".length).trim());
@@ -13,9 +19,13 @@ export default async function main() {
     if (result !== "GATHERCHEATS_OK") {
       throw new Error(`Gather returned an unexpected response: ${result || "<empty>"}`);
     }
-    await showHUD("Gather speed set to 4×");
+    await showHUD(`Gather speed set to ${speed}×`);
   } catch (error) {
-    const copied = await copyErrorToClipboard("Gather 4x Speed", error);
-    await showHUD(copied ? "Gather 4x Speed failed — error copied" : "Could not set Gather speed");
+    if (error instanceof GatherNotFocusedError) {
+      await showHUD(error.message);
+      return;
+    }
+    const copied = await copyErrorToClipboard("Set Gather Speed", error);
+    await showHUD(copied ? "Could not set Gather speed — error copied" : "Could not set Gather speed");
   }
 }

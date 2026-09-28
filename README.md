@@ -1,14 +1,17 @@
 # GatherCheats
 
-GatherCheats adds speed and teleport commands for the Gather v1 desktop app on macOS. It does not support Gather v2 beta. The extension uses AppleScript and System Events to operate Gather's developer console.
+GatherCheats adds speed, teleport, and no-clip commands for the Gather v1 desktop app on macOS. It does not support Gather v2 beta. The extension uses AppleScript and System Events to operate Gather's developer console.
 
 ## Raycast commands
 
 | Command                    | What it does                                                                                        |
 | -------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Set 4x Speed**           | Sets Gather v1's speed modifier to 4×. Get on and off a go-kart to reset the speed.                 |
+| **Set Speed**              | Sets Gather v1's speed to 1×, 2×, 3×, or 4× (default). Get on and off a go-kart to reset it.        |
 | **Save Current Spot**      | Saves your current Gather v1 space, map, and position under a name. Gather must be open in a space. |
 | **Teleport to Saved Spot** | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.                |
+| **Toggle No-Clip**         | Hold an arrow key to teleport through walls one tile at a time; run again to turn it off.           |
+
+No-clip affects only arrow keys in the Gather v1 game view. It moves at a paced rate while a key is held and stops scheduling teleports as soon as the key is released or Gather loses focus. It leaves text fields and modifier-key shortcuts alone and won't move past the current map's edges. The toggle resets if Gather reloads or quits.
 
 Saved spots are kept in Raycast's local storage for the GatherCheats extension. They are not stored in the repository or in a regular file, and the standalone AppleScript cannot read Raycast's managed storage. Spots are labeled with their Gather space ID; teleporting only runs when that same space is open.
 
@@ -32,7 +35,7 @@ To use these scripts, add the files from `raycast-scripts` to a folder configure
 
 ## Permissions
 
-The commands activate Gather, open its developer console with ⌘⌥I, and send keystrokes through System Events. macOS may ask you to allow Raycast or `osascript` to control Gather and to grant Accessibility access. Enable the requested access in **System Settings → Privacy & Security → Automation** or **Accessibility**.
+The extension commands run only when Gather v1 Desktop is the focused app. They open its developer console with ⌘⌥I and send keystrokes through System Events; if another app is focused, they show a warning instead. The standalone scripts still activate Gather themselves. macOS may ask you to allow Raycast or `osascript` to control Gather and to grant Accessibility access. Enable the requested access in **System Settings → Privacy & Security → Automation** or **Accessibility**.
 
 In development mode, the extension copies error details to the clipboard for debugging. Published commands show an error without replacing your clipboard. Standalone script commands handle their own errors separately.
 

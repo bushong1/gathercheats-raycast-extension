@@ -1,4 +1,4 @@
-import { LocalStorage, closeMainWindow } from "@raycast/api";
+import { LocalStorage, PopToRootType, closeMainWindow } from "@raycast/api";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
@@ -17,9 +17,33 @@ export type TeleportSpot = {
 export type CurrentPosition = Omit<TeleportSpot, "id" | "label">;
 
 const appleScriptString = (value: string) => `"${value.replaceAll("\\", "\\\\").replaceAll('"', '\\"')}"`;
+const GATHER_NOT_FOCUSED = "GATHERCHEATS_NOT_FOCUSED";
 
-export async function runGatherConsole(js: string): Promise<string> {
+export class GatherNotFocusedError extends Error {
+  constructor() {
+    super("Focus the Gather v1 Desktop window and try again.");
+    this.name = "GatherNotFocusedError";
+  }
+}
+
+export async function runGatherConsole(
+  js: string,
+  options: { resultTimeoutSeconds?: number; settleSeconds?: number; resetRaycast?: boolean } = {},
+): Promise<string> {
+  const resultTimeoutSeconds = options.resultTimeoutSeconds ?? 10;
+  const settleSeconds = options.settleSeconds ?? 0;
+  if (!Number.isInteger(resultTimeoutSeconds) || resultTimeoutSeconds < 1 || resultTimeoutSeconds > 60) {
+    throw new Error("Result timeout must be between 1 and 60 seconds.");
+  }
+  if (!Number.isFinite(settleSeconds) || settleSeconds < 0 || settleSeconds > 5) {
+    throw new Error("Command settle time must be between 0 and 5 seconds.");
+  }
+  const clipboardPolls = resultTimeoutSeconds * 5;
   const script = `
+tell application "System Events"
+  if not (exists process "Gather") then return "${GATHER_NOT_FOCUSED}"
+  if not (frontmost of process "Gather") then return "${GATHER_NOT_FOCUSED}"
+end tell
 set previousClipboard to the clipboard
 try
   set previousClipboardText to the clipboard as text
@@ -27,30 +51,23 @@ on error
   set previousClipboardText to ""
 end try
 try
-  tell application "Gather" to activate
   tell application "System Events"
-    repeat 30 times
-      if exists process "Gather" then
-        if frontmost of process "Gather" then exit repeat
-      end if
-      delay 0.1
-    end repeat
-    if not (exists process "Gather") then error "Gather did not launch."
-    if not (frontmost of process "Gather") then error "Gather did not come to the foreground."
+    if not (frontmost of process "Gather") then error "Gather lost focus before the command could run."
     delay 0.3
     keystroke "i" using {command down, option down}
     delay 0.8
     keystroke ${appleScriptString(js)}
+    ${settleSeconds > 0 ? `delay ${settleSeconds}` : ""}
     key code 36
     set commandOutput to previousClipboardText
-    repeat 50 times
+    repeat ${clipboardPolls} times
       delay 0.2
       set commandOutput to the clipboard as text
       if commandOutput is not previousClipboardText then exit repeat
     end repeat
     keystroke "i" using {command down, option down}
   end tell
-  if commandOutput is previousClipboardText then error "Gather did not copy a console result within 10 seconds. Check that its developer console opened and accepted the command."
+  if commandOutput is previousClipboardText then error "Gather did not copy a console result within ${resultTimeoutSeconds} seconds. Check that its developer console opened and accepted the command."
   set the clipboard to previousClipboard
   return commandOutput
 on error errorMessage number errorNumber
@@ -59,9 +76,13 @@ on error errorMessage number errorNumber
 end try
 `;
 
-  await closeMainWindow();
+  await closeMainWindow(
+    options.resetRaycast ? { clearRootSearch: true, popToRootType: PopToRootType.Immediate } : undefined,
+  );
   const { stdout } = await execFileAsync("/usr/bin/osascript", ["-e", script]);
-  return stdout.trim();
+  const result = stdout.trim();
+  if (result === GATHER_NOT_FOCUSED) throw new GatherNotFocusedError();
+  return result;
 }
 
 export async function getSavedSpots(): Promise<TeleportSpot[]> {
