@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import vm from "node:vm";
 import { installNoClipScript, toggleInstalledNoClipScript } from "../src/no-clip-script.ts";
@@ -91,10 +92,11 @@ function createGather({ deferredTeleports = false } = {}) {
         vm.runInNewContext(installNoClipScript, context);
       }
     },
+    runScript: (script) => vm.runInNewContext(script, context),
     installCount: () => installCount,
     installLegacy() {
       let removed = false;
-      window.__gatherCheatsNoClip = { remove: () => (removed = true) };
+      window.__gatherCheatsNoClip = { version: 3, toggle: () => false, remove: () => (removed = true) };
       return () => removed;
     },
     setPosition: (next) => (position = next),
@@ -149,6 +151,65 @@ test("held arrows teleport at a paced rate and key-up discards the next step", a
   assert.equal(gather.press("ArrowRight").defaultPrevented, true);
 });
 
+test("standalone script installs no-clip and shares the extension toggle state", async () => {
+  const source = readFileSync(new URL("../raycast-scripts/toggle-no-clip.applescript", import.meta.url), "utf8");
+  const assignment = source.match(/set jsCommand to ([\s\S]*?)\n\s*set the clipboard to "GATHERCHEATS_PENDING"/);
+  assert.ok(assignment, "standalone script must contain a JavaScript command");
+  const script = [...assignment[1].matchAll(/"([^"]*)"/g)].map((match) => match[1]).join("");
+  const gather = createGather();
+
+  gather.runScript(script);
+  assert.equal(gather.clipboard.at(-1), "GATHERCHEATS_NO_CLIP_ON");
+  assert.equal(gather.press("ArrowRight").defaultPrevented, true);
+  assert.deepEqual(gather.teleports, [{ mapId: "map-1", x: 6, y: 5 }]);
+  await gather.flush();
+  gather.press("ArrowUp");
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 7, y: 4 });
+  gather.release("ArrowRight");
+  gather.release("ArrowUp");
+  await gather.flush();
+
+  gather.toggle();
+  assert.equal(gather.clipboard.at(-1), "GATHERCHEATS_NO_CLIP_OFF");
+  assert.equal(gather.press("ArrowRight").defaultPrevented, false);
+  gather.runScript(script);
+  assert.equal(gather.clipboard.at(-1), "GATHERCHEATS_NO_CLIP_ON");
+  assert.equal(gather.press("ArrowRight").defaultPrevented, true);
+});
+
+test("perpendicular arrows move diagonally and return to one axis on release", async () => {
+  const gather = createGather();
+  gather.toggle();
+  gather.press("ArrowUp");
+  await gather.flush();
+  gather.press("ArrowRight");
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 6, y: 3 });
+  await gather.flush();
+  gather.tick();
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 7, y: 2 });
+  await gather.flush();
+  gather.release("ArrowUp");
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 8, y: 2 });
+  gather.release("ArrowRight");
+  await gather.flush();
+  assert.equal(gather.timerCount(), 0);
+});
+
+test("the most recently pressed key wins when opposite arrows are held", async () => {
+  const gather = createGather();
+  gather.toggle();
+  gather.press("ArrowLeft");
+  await gather.flush();
+  gather.press("ArrowRight");
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 5, y: 5 });
+  await gather.flush();
+  gather.press("ArrowUp");
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 6, y: 4 });
+  await gather.flush();
+  gather.release("ArrowRight");
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 5, y: 3 });
+});
+
 test("one in-flight teleport cannot queue more moves after key-up", async () => {
   const gather = createGather({ deferredTeleports: true });
   gather.toggle();
@@ -184,11 +245,11 @@ test("direction changes, typing, shortcuts, blur, and map edges are handled safe
   gather.press("ArrowUp");
   await gather.flush();
   gather.press("ArrowRight");
-  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 6, y: 4 });
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 6, y: 3 });
   gather.release("ArrowRight");
   await gather.flush();
   gather.tick();
-  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 6, y: 3 });
+  assert.deepEqual(gather.teleports.at(-1), { mapId: "map-1", x: 6, y: 2 });
 
   gather.blur();
   assert.equal(gather.timerCount(), 0);

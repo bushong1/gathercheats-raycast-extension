@@ -11,7 +11,7 @@ GatherCheats adds speed, teleport, and no-clip commands for the Gather v1 deskto
 | **Teleport to Saved Spot** | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.                |
 | **Toggle No-Clip**         | Hold an arrow key to teleport through walls one tile at a time; run again to turn it off.           |
 
-No-clip affects only arrow keys in the Gather v1 game view. It moves at a paced rate while a key is held and stops scheduling teleports as soon as the key is released or Gather loses focus. It leaves text fields and modifier-key shortcuts alone and won't move past the current map's edges. The toggle resets if Gather reloads or quits.
+No-clip affects only arrow keys in the Gather v1 game view. Hold two perpendicular arrows to move diagonally. It moves at a paced rate while keys are held and stops scheduling teleports when they are released or Gather loses focus. It leaves text fields and modifier-key shortcuts alone and won't move past the current map's edges. The toggle resets if Gather reloads or quits.
 
 Saved spots are kept in Raycast's local storage for the GatherCheats extension. They are not stored in the repository or in a regular file, and the standalone AppleScript cannot read Raycast's managed storage. Spots are labeled with their Gather space ID; teleporting only runs when that same space is open.
 
@@ -19,7 +19,7 @@ Saved spots are kept in Raycast's local storage for the GatherCheats extension. 
 
 The [`raycast-scripts`](raycast-scripts) directory contains script-command versions for Gather v1 Desktop workflows that do not need the Raycast extension UI.
 
-`gather-4x.applescript` sets the speed modifier to 4×. `copy-current-location.applescript` copies your current Gather location as an entry for `teleport-to-saved-spot.applescript`, which offers a menu of favorite locations.
+`gather-4x.applescript` sets the speed modifier to 4×. `toggle-no-clip.applescript` turns no-clip movement on or off and shares its toggle state with the extension command. Both switch to the Gather window. `copy-current-location.applescript` copies your current Gather location as an entry for `teleport-to-saved-spot.applescript`, which offers a menu of favorite locations.
 
 To add a favorite, run **Copy Current Location** while you are at the spot, paste its output into the `teleportSpots` list near the top of `teleport-to-saved-spot.applescript`, and replace `New Spot` with a useful name. An entry looks like this:
 

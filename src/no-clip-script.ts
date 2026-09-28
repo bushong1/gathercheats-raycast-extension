@@ -2,7 +2,7 @@ export const toggleInstalledNoClipScript = `
 (() => {
   try {
     const active = window.__gatherCheatsNoClip;
-    if (active && active.version === 3 && typeof active.toggle === 'function') {
+    if (active && active.version === 4 && typeof active.toggle === 'function') {
       copy(active.toggle() ? 'GATHERCHEATS_NO_CLIP_ON' : 'GATHERCHEATS_NO_CLIP_OFF');
     } else {
       copy('GATHERCHEATS_NO_CLIP_INSTALL');
@@ -37,6 +37,13 @@ export const installNoClipScript = `
       ArrowRight: [1, 0],
     };
     const held = [];
+    const axis = (negative, positive) => {
+      const negativeIndex = held.lastIndexOf(negative);
+      const positiveIndex = held.lastIndexOf(positive);
+      if (negativeIndex === -1 && positiveIndex === -1) return 0;
+      return negativeIndex > positiveIndex ? -1 : 1;
+    };
+    const movement = () => [axis('ArrowLeft', 'ArrowRight'), axis('ArrowUp', 'ArrowDown')];
     let timer = null;
     let inFlight = false;
     let enabled = true;
@@ -58,8 +65,8 @@ export const installNoClipScript = `
     };
     const step = async () => {
       if (!enabled || held.length === 0 || inFlight) return;
-      const direction = held[held.length - 1];
-      const offset = offsets[direction];
+      const offset = movement();
+      const direction = offset.join(',');
       inFlight = true;
       try {
         const position = gameSpace.getMyPredictedPos();
@@ -76,7 +83,7 @@ export const installNoClipScript = `
         console.error('GatherCheats no-clip teleport failed', error);
       } finally {
         inFlight = false;
-        if (enabled && held.length > 0) schedule(held[held.length - 1] === direction ? 90 : 0);
+        if (enabled && held.length > 0) schedule(movement().join(',') === direction ? 90 : 0);
       }
     };
     const isTyping = (target) => target instanceof Element &&
@@ -124,7 +131,7 @@ export const installNoClipScript = `
     window.addEventListener('keydown', keyDown, true);
     window.addEventListener('keyup', keyUp, true);
     window.addEventListener('blur', stop, true);
-    window[key] = { version: 3, remove, toggle };
+    window[key] = { version: 4, remove, toggle };
     copy('GATHERCHEATS_NO_CLIP_ON');
   } catch (error) {
     copy('GATHERCHEATS_ERROR: ' + String(error));
