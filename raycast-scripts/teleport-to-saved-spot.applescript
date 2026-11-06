@@ -51,6 +51,13 @@ on run
 		tell application "System Events"
 			keystroke "i" using {command down, option down}
 			delay 0.5
+			-- Dismiss Settings, select Console, and focus its input before typing.
+			key code 53
+			keystroke "j" using {command down, option down}
+			delay 0.3
+			keystroke "`" using {control down}
+			delay 0.2
+			keystroke "a" using {command down}
 			keystroke jsCommand
 			key code 36
 			delay 0.3

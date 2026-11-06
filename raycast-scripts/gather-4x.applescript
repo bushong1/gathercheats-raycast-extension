@@ -23,6 +23,13 @@ try
         -- Open DevTools
         keystroke "i" using {command down, option down}
         delay 0.5
+        -- Dismiss Settings, select Console, and focus its input before typing.
+        key code 53
+        keystroke "j" using {command down, option down}
+        delay 0.3
+        keystroke "`" using {control down}
+        delay 0.2
+        keystroke "a" using {command down}
 
         -- Execute in console
 		keystroke "try { game.setSpeedModifier(4); copy('GATHERCHEATS_OK'); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error) + ' ' + (error && error.stack ? error.stack : '')); }"

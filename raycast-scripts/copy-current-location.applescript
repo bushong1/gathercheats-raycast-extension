@@ -23,6 +23,13 @@ on run
 		tell application "System Events"
 			keystroke "i" using {command down, option down}
 			delay 0.5
+			-- Dismiss Settings, select Console, and focus its input before typing.
+			key code 53
+			keystroke "j" using {command down, option down}
+			delay 0.3
+			keystroke "`" using {control down}
+			delay 0.2
+			keystroke "a" using {command down}
 			keystroke "try { const p = gameSpace.getMyPredictedPos(); const mapId = p.map || gameSpace.getMyPlayerMap().id; if (!game.spaceId || !mapId || !Number.isFinite(p.x) || !Number.isFinite(p.y)) throw new Error('Current Gather position unavailable'); copy('{' + JSON.stringify('New Spot') + ', ' + JSON.stringify(game.spaceId) + ', ' + JSON.stringify(mapId) + ', ' + p.x + ', ' + p.y + '}'); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error) + ' ' + (error && error.stack ? error.stack : '')); }"
 			key code 36
 			delay 0.3

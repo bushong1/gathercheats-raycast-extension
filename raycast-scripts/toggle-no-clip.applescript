@@ -52,6 +52,13 @@ on run
 			keystroke "i" using {command down, option down}
 			set consoleOpened to true
 			delay 0.8
+			-- Dismiss Settings, select Console, and focus its input before typing.
+			key code 53
+			keystroke "j" using {command down, option down}
+			delay 0.3
+			keystroke "`" using {control down}
+			delay 0.2
+			keystroke "a" using {command down}
 			keystroke jsCommand
 			delay 1
 			key code 36

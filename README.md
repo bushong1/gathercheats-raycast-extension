@@ -35,7 +35,7 @@ To use these scripts, add the files from `raycast-scripts` to a folder configure
 
 ## Permissions
 
-The extension commands run only when Gather v1 Desktop is the focused app. They open its developer console with ⌘⌥I and send keystrokes through System Events; if another app is focused, they show a warning instead. The standalone scripts still activate Gather themselves. macOS may ask you to allow Raycast or `osascript` to control Gather and to grant Accessibility access. Enable the requested access in **System Settings → Privacy & Security → Automation** or **Accessibility**.
+The extension commands run only when Gather v1 Desktop is the focused app. They open DevTools with ⌘⌥I, dismiss Settings, select Console with ⌘⌥J, and focus its input with Control + backtick before sending JavaScript through System Events; if another app is focused, they show a warning instead. The standalone scripts still activate Gather themselves. macOS may ask you to allow Raycast or `osascript` to control Gather and to grant Accessibility access. Enable the requested access in **System Settings → Privacy & Security → Automation** or **Accessibility**.
 
 In development mode, the extension copies error details to the clipboard for debugging. Published commands show an error without replacing your clipboard. Standalone script commands handle their own errors separately.
 

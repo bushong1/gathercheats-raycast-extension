@@ -56,6 +56,14 @@ try
     delay 0.3
     keystroke "i" using {command down, option down}
     delay 0.8
+    -- Dismiss DevTools Settings, select Console, then focus its prompt.
+    -- Opening DevTools alone restores the last panel and focus position.
+    key code 53
+    keystroke "j" using {command down, option down}
+    delay 0.3
+    keystroke "\`" using {control down}
+    delay 0.2
+    keystroke "a" using {command down}
     keystroke ${appleScriptString(js)}
     ${settleSeconds > 0 ? `delay ${settleSeconds}` : ""}
     key code 36

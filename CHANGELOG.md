@@ -1,5 +1,9 @@
 # Changelog
 
+## [Fix developer console focus] - {PR_MERGE_DATE}
+
+- Select the Console panel and focus its input before typing commands, so JavaScript does not trigger DevTools shortcuts or open Settings.
+
 ## 1.0.0
 
 Initial release for the Gather v1 desktop app on macOS. Gather v2 beta is not supported.
