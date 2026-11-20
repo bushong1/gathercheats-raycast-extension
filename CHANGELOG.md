@@ -1,7 +1,8 @@
 # Changelog
 
-## [Fix developer console focus] - {PR_MERGE_DATE}
+## 1.0.1
 
+- Reapply the selected speed every minute until 1× is selected or Gather reloads. Repeated runs replace the existing timer.
 - Select the Console panel and focus its input before typing commands, so JavaScript does not trigger DevTools shortcuts or open Settings.
 
 ## 1.0.0

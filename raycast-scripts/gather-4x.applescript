@@ -8,7 +8,7 @@
 # Optional parameters:
 # @raycast.icon 💨
 # @raycast.packageName GatherCheats
-# @raycast.description Turn on 4x speed in Gather v1 Desktop for macOS
+# @raycast.description Set 4x speed immediately and every minute in Gather v1 Desktop for macOS
 
 # Documentation:
 # @raycast.author charles_bushong
@@ -32,7 +32,7 @@ try
         keystroke "a" using {command down}
 
         -- Execute in console
-		keystroke "try { game.setSpeedModifier(4); copy('GATHERCHEATS_OK'); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error) + ' ' + (error && error.stack ? error.stack : '')); }"
+		keystroke "(() => { try { const key = '__gatherCheatsSpeedInterval'; window.clearInterval(window[key]); delete window[key]; game.setSpeedModifier(4); if (4 !== 1) { window[key] = window.setInterval(() => { try { game.setSpeedModifier(4); } catch (error) { console.error('GatherCheats speed reapply failed', error); } }, 60000); } copy('GATHERCHEATS_OK'); } catch (error) { copy('GATHERCHEATS_ERROR: ' + String(error) + ' ' + (error && error.stack ? error.stack : '')); } })()"
 		key code 36
 		delay 0.3
 		set commandOutput to the clipboard as text

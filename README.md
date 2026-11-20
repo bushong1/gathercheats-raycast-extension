@@ -6,10 +6,12 @@ GatherCheats adds speed, teleport, and no-clip commands for the Gather v1 deskto
 
 | Command                    | What it does                                                                                        |
 | -------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Set Speed**              | Sets Gather v1's speed to 1×, 2×, 3×, or 4× (default). Get on and off a go-kart to reset it.        |
+| **Set Speed**              | Sets speed to 1×, 2×, 3×, or 4× (default), reapplying every minute. Select 1× to stop.              |
 | **Save Current Spot**      | Saves your current Gather v1 space, map, and position under a name. Gather must be open in a space. |
 | **Teleport to Saved Spot** | Search saved spots and teleport to one. Use the Action Panel to remove a saved spot.                |
 | **Toggle No-Clip**         | Hold an arrow key to teleport through walls one tile at a time; run again to turn it off.           |
+
+Set Speed applies immediately and every 60 seconds afterward. Running it again replaces the previous timer; selecting 1× stops the timer and restores normal speed. Run it again after Gather reloads or quits.
 
 No-clip affects only arrow keys in the Gather v1 game view. Hold two perpendicular arrows to move diagonally. It moves at a paced rate while keys are held and stops scheduling teleports when they are released or Gather loses focus. It leaves text fields and modifier-key shortcuts alone and won't move past the current map's edges. The toggle resets if Gather reloads or quits.
 
@@ -19,7 +21,7 @@ Saved spots are kept in Raycast's local storage for the GatherCheats extension. 
 
 The [`raycast-scripts`](raycast-scripts) directory contains script-command versions for Gather v1 Desktop workflows that do not need the Raycast extension UI.
 
-`gather-4x.applescript` sets the speed modifier to 4×. `toggle-no-clip.applescript` turns no-clip movement on or off and shares its toggle state with the extension command. Both switch to the Gather window. `copy-current-location.applescript` copies your current Gather location as an entry for `teleport-to-saved-spot.applescript`, which offers a menu of favorite locations.
+`gather-4x.applescript` sets the speed modifier to 4× and reapplies it every minute. Select 1× with the extension to stop it, or reload Gather. `toggle-no-clip.applescript` turns no-clip movement on or off and shares its toggle state with the extension command. Both switch to the Gather window. `copy-current-location.applescript` copies your current Gather location as an entry for `teleport-to-saved-spot.applescript`, which offers a menu of favorite locations.
 
 To add a favorite, run **Copy Current Location** while you are at the spot, paste its output into the `teleportSpots` list near the top of `teleport-to-saved-spot.applescript`, and replace `New Spot` with a useful name. An entry looks like this:
 

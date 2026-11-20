@@ -18,7 +18,7 @@
       "name": "gathercheats-4x-speed",
       "title": "Set Speed",
       "subtitle": "Gather v1 Desktop",
-      "description": "Set Gather's game speed to 1×, 2×, 3×, or 4× (default). Reset it by getting on and off a go-kart.",
+      "description": "Set Gather's game speed to 1×, 2×, 3×, or 4× (default), reapplying every minute. Select 1× to stop.",
       "icon": "four-x-speed.png",
       "mode": "no-view",
       "arguments": [
